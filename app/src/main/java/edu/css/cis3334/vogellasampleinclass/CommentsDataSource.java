@@ -14,7 +14,6 @@ public class CommentsDataSource {
     // Database fields
     private SQLiteDatabase database;
     private MySQLiteHelper dbHelper;
-    private String[] allColumns = { MySQLiteHelper.COLUMN_ID, MySQLiteHelper.COLUMN_COMMENT };
 
     public CommentsDataSource(Context context) {
         dbHelper = new MySQLiteHelper(context);
@@ -29,12 +28,11 @@ public class CommentsDataSource {
     }
 
     // create a comment from a string. Adds the comment to the database and converts it to a comment object
-    public Comment createComment(String comment, String rating) {
+    public Comment createComment(String comment) {
         // use values to store a new record for the database
         ContentValues values = new ContentValues();
         // store the new comment in the comment field of the new record
         values.put(MySQLiteHelper.COLUMN_COMMENT, comment);
-        values.put(MySQLiteHelper.COLUMN_RATING, rating);
         // insert new record into the table
         long insertId = database.insert(MySQLiteHelper.TABLE_COMMENTS, null, values);
         // reads the last record back from the database
@@ -82,7 +80,6 @@ public class CommentsDataSource {
         //comment.setComment(cursor.getString(1));
         comment.setComment(cursor.getString( cursor.getColumnIndex( MySQLiteHelper.COLUMN_COMMENT ) ));
 
-        comment.setRating( cursor.getString( cursor.getColumnIndex(MySQLiteHelper.COLUMN_RATING) ) );
         return comment;
     }
 }
