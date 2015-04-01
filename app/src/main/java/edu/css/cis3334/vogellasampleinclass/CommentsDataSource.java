@@ -29,16 +29,17 @@ public class CommentsDataSource {
     }
 
     // create a comment from a string. Adds the comment to the database and converts it to a comment object
-    public Comment createComment(String comment) {
+    public Comment createComment(String comment, String rating) {
         // use values to store a new record for the database
         ContentValues values = new ContentValues();
         // store the new comment in the comment field of the new record
         values.put(MySQLiteHelper.COLUMN_COMMENT, comment);
-        // instert new record into the table
+        values.put(MySQLiteHelper.COLUMN_RATING, rating);
+        // insert new record into the table
         long insertId = database.insert(MySQLiteHelper.TABLE_COMMENTS, null, values);
         // reads the last record back from the database
         Cursor cursor = database.query(MySQLiteHelper.TABLE_COMMENTS,
-                allColumns, MySQLiteHelper.COLUMN_ID + " = " + insertId, null,
+                null, MySQLiteHelper.COLUMN_ID + " = " + insertId, null,
                 null, null, null);
         cursor.moveToFirst();
         // convert the database record into a comment object
@@ -59,7 +60,7 @@ public class CommentsDataSource {
         List<Comment> comments = new ArrayList<Comment>();
         // grad all the comments from the database table
         Cursor cursor = database.query(MySQLiteHelper.TABLE_COMMENTS,
-                allColumns, null, null, null, null, null);
+                null, null, null, null, null, null);
         // loop through all the record in the cursor
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -80,6 +81,8 @@ public class CommentsDataSource {
         comment.setId( cursor.getLong( cursor.getColumnIndex( MySQLiteHelper.COLUMN_ID )) );
         //comment.setComment(cursor.getString(1));
         comment.setComment(cursor.getString( cursor.getColumnIndex( MySQLiteHelper.COLUMN_COMMENT ) ));
+
+        comment.setRating( cursor.getString( cursor.getColumnIndex(MySQLiteHelper.COLUMN_RATING) ) );
         return comment;
     }
 }

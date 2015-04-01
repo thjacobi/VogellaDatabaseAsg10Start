@@ -1,7 +1,6 @@
 package edu.css.cis3334.vogellasampleinclass;
 
 import java.util.List;
-import java.util.Random;
 
 import android.app.ListActivity;
 import android.os.Bundle;
@@ -13,7 +12,7 @@ import android.widget.ListView;
 
 public class TestDatabaseActivity extends ListActivity {
     private CommentsDataSource datasource;      // our link to the datasource for SQLite access
-    private int listPostion = 0;                // currently selected item in the list
+    private int listPosition = 0;                // currently selected item in the list
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,13 +29,13 @@ public class TestDatabaseActivity extends ListActivity {
                 android.R.layout.simple_list_item_1, values);
         setListAdapter(adapter);
 
-        // need to grap the list item click so we remember what item is selected
+        // need to grab the list item click so we remember what item is selected
         ListView lv = (ListView) findViewById(android.R.id.list);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override public void onItemClick(AdapterView<?> arg0, View arg1,int position, long arg3)
             {
-                listPostion= position;
+                listPosition = position;
                 //Toast.makeText(SuggestionActivity.this, "" + position, Toast.LENGTH_SHORT).show();
             }
         });
@@ -54,14 +53,19 @@ public class TestDatabaseActivity extends ListActivity {
                 //String[] comments = new String[] { "Cool", "Very nice", "Hate it" };
                 //int nextInt = new Random().nextInt(3);
                 // save the new comment to the database
+
+                // Create variables for UI components
                 EditText txtComment = (EditText) findViewById(R.id.etComment);
-                comment = datasource.createComment(  txtComment.getText().toString()  );
+                EditText txtRating = (EditText) findViewById(R.id.txtRating);
+
+                comment = datasource.createComment(  txtComment.getText().toString(), txtRating.getText().toString()  );
                 myListAdapter.add(comment);
+                txtComment.setText("");
                 break;
             case R.id.delete:
-                // The selected item postion is stored in the variable listPostion by the onItemClick listener
-                if (myListAdapter.getCount() > listPostion) {
-                    comment = (Comment) getListAdapter().getItem(listPostion);
+                // The selected item position is stored in the variable listPosition by the onItemClick listener
+                if (myListAdapter.getCount() > listPosition) {
+                    comment = (Comment) getListAdapter().getItem(listPosition);
                     datasource.deleteComment(comment);
                     myListAdapter.remove(comment);
                 }
