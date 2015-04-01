@@ -58,7 +58,7 @@ public class TestDatabaseActivity extends ListActivity {
                 EditText txtComment = (EditText) findViewById(R.id.etComment);
                 EditText txtRating = (EditText) findViewById(R.id.txtRating);
 
-                comment = datasource.createComment(  txtComment.getText().toString(), txtRating.getText().toString()  );
+                comment = datasource.createComment(  txtComment.getText().toString()  );
                 myListAdapter.add(comment);
                 txtComment.setText("");
                 break;
