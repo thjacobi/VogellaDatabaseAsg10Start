@@ -28,11 +28,13 @@ public class CommentsDataSource {
     }
 
     // create a comment from a string. Adds the comment to the database and converts it to a comment object
-    public Comment createComment(String comment) {
+    public Comment createComment(String comment, String rating) {
         // use values to store a new record for the database
         ContentValues values = new ContentValues();
         // store the new comment in the comment field of the new record
         values.put(MySQLiteHelper.COLUMN_COMMENT, comment);
+        // store the new rating in the rating field of the new record
+        values.put(MySQLiteHelper.COLUMN_RATING, rating);
         // insert new record into the table
         long insertId = database.insert(MySQLiteHelper.TABLE_COMMENTS, null, values);
         // reads the last record back from the database
@@ -56,7 +58,7 @@ public class CommentsDataSource {
     // get all the comments from the database and convert them into a List
     public List<Comment> getAllComments() {
         List<Comment> comments = new ArrayList<Comment>();
-        // grad all the comments from the database table
+        // grab all the comments from the database table
         Cursor cursor = database.query(MySQLiteHelper.TABLE_COMMENTS,
                 null, null, null, null, null, null);
         // loop through all the record in the cursor
@@ -79,7 +81,8 @@ public class CommentsDataSource {
         comment.setId( cursor.getLong( cursor.getColumnIndex( MySQLiteHelper.COLUMN_ID )) );
         //comment.setComment(cursor.getString(1));
         comment.setComment(cursor.getString( cursor.getColumnIndex( MySQLiteHelper.COLUMN_COMMENT ) ));
-
+        //comment.setRating(cursor.getString(2));
+        comment.setRating(cursor.getString(cursor.getColumnIndex( MySQLiteHelper.COLUMN_RATING ) ));
         return comment;
     }
 }

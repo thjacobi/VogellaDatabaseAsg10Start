@@ -48,6 +48,7 @@ public class TestDatabaseActivity extends ListActivity {
         @SuppressWarnings("unchecked")
         ArrayAdapter<Comment> myListAdapter = (ArrayAdapter<Comment>) getListAdapter();
         Comment comment = null;
+        Comment rating = null;
         switch (view.getId()) {
             case R.id.add:
                 //String[] comments = new String[] { "Cool", "Very nice", "Hate it" };
@@ -56,9 +57,10 @@ public class TestDatabaseActivity extends ListActivity {
 
                 // Create variables for UI components
                 EditText txtComment = (EditText) findViewById(R.id.etComment);
-                EditText txtRating = (EditText) findViewById(R.id.txtRating);
+                EditText txtRating = (EditText) findViewById(R.id.etRating);
 
-                comment = datasource.createComment(  txtComment.getText().toString()  );
+                comment = datasource.createComment(  txtComment.getText().toString(), txtRating.getText().toString()  );
+
                 myListAdapter.add(comment);
                 txtComment.setText("");
                 break;
